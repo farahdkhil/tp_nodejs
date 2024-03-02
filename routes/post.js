@@ -33,6 +33,16 @@ router.put('/edit/:id', async (req, res) => {
     }
 });
 
+router.get('/all', async (req,res)=>{
+    try{
+        const allposts = await Post.find();
+        res.status(200).send(allposts);
+    }catch(err){
+        res.status(400).send(err.message)
+    }
+})
+
+
 
 
 
