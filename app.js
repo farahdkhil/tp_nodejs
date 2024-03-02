@@ -6,7 +6,18 @@ app.use(express.json());
 app.use('/post',post);
 app.use('/auth',auth);
 
+const mongoose = require('mongoose')
 
-app.listen(8000,()=>{
-    console.log('Server is running on port 8000...')
+//connection to the mongodb and start server
+mongoose.connect(MONGODB_URI).then(()=>{
+    console.log('Connected to mongodb')
+    app.listen(PORT,()=>{
+        console.log(`Server listening on ${PORT}`)
+    })
+}).catch(err=>{
+    console.log('Error connecting to mongodb:',err.message)
 })
+
+// app.listen(PORT,()=>{
+//     console.log('Server is running on port 9000...')
+// })
