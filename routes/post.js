@@ -42,6 +42,24 @@ router.get('/all', async (req,res)=>{
     }
 })
 
+router.get('/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).send('id invalide !');
+        }
+        const postById = await Post.findById(id);
+
+        if (postById) {
+            res.status(200).send(postById);
+        } else {
+            res.status(404).send('aucun post trouvé avec cet id');
+        }
+    } catch (err) {
+        res.status(400).send(err.message);
+    }
+});
+
 
 
 
