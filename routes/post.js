@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/post');
+const mongoose = require('mongoose')
 
 router.post('/add', async (req, res) => {
     try {
@@ -13,6 +14,27 @@ router.post('/add', async (req, res) => {
         res.status(400).send(err.message);
     }
 });
+
+router.put('/edit/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const body = req.body.body;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).send('id invalide !');
+        }
+        const updatedPost = await Post.findByIdAndUpdate(id, { body: body }, { new: true });
+        if (updatedPost) {
+            res.status(200).send('modifié !');
+        } else {
+            res.status(404).send('non trouvé !');
+        }
+    } catch (err) {
+        res.status(400).send(err.message);
+    }
+});
+
+
+
 
 
 module.exports=router;
