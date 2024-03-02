@@ -48,10 +48,10 @@ router.get('/:id', async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).send('id invalide !');
         }
-        const postById = await Post.findById(id);
+        const findById = await Post.findById(id);
 
-        if (postById) {
-            res.status(200).send(postById);
+        if (findById) {
+            res.status(200).send(findById);
         } else {
             res.status(404).send('aucun post trouvé avec cet id');
         }
@@ -60,8 +60,22 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-
-
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).send('id invalide !');
+        }
+        const deletedPost = await Post.findByIdAndDelete(id);
+        if (deletedPost) {
+            res.status(200).send('Supprimé !');
+        } else {
+            res.status(404).send('aucun post trouvé avec cet ID');
+        }
+    } catch (err) {
+        res.status(400).send(err.message);
+    }
+});
 
 
 
